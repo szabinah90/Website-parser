@@ -1,0 +1,21 @@
+{
+  "doc": {
+    "properties": {
+      "date_published": {
+        "type": "date"
+      },
+      "author": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "url": {
+        "type": "text"
+      },
+      "content": {
+        "type": "text"
+      }
+    }
+  }
+}
