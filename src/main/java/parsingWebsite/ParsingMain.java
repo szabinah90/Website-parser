@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ParsingMain {
+
     public static void main(String[] args) throws IOException {
         MyFileWriter writer = new MyFileWriter();
         URLHandlers urlHandlers = new URLHandlers();
