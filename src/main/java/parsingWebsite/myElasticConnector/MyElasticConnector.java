@@ -88,7 +88,6 @@ public class MyElasticConnector {
         }
 
         String authorNodeData = authorNode.getWholeData();
-        System.out.println(authorNodeData);
         Matcher mDate = Pattern.compile("\\d{4}-\\d{2}-\\d{2}").matcher(authorNodeData);
         Matcher mAuthor = Pattern.compile("\"[A-ZÁÉÓŐÚŰÍ][a-záéóőúűí]+( [A-ZÁÉÓŐÚŰÍ][a-záéóőúűí]+)+\"").matcher(authorNodeData);
         Date datePublished = null;

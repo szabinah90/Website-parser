@@ -3,6 +3,8 @@
 /.idea/
 /out/
 
+/src/main/java/parsingWebsite/urlHandlers/AutomaticScrolling.java
+
 *.iml
 *.txt
 gradlew
