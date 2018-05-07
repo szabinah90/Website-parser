@@ -15,7 +15,7 @@ public class ParsingMain {
         MyFileWriter writer = new MyFileWriter();
         URLHandlers urlHandlers = new URLHandlers();
 
-        String urlToParse = "https://index.hu/24ora/?word=1&pepe=1&tol=1999-01-01&ig=2018-05-07&s=Android";
+        String urlToParse = "https://index.hu/24ora/?word=1&pepe=1&tol=1999-01-01&ig=2018-05-07&s=keyword";
         String DOMclassName = "datum cikk-date-label";
 
         /**
