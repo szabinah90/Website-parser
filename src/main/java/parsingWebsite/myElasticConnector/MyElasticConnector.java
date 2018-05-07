@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import parsingWebsite.ParsingMain;
+import parsingWebsite.fileReader.MyFileReader;
 import parsingWebsite.urlHandlers.URLHandlers;
 
 import java.io.IOException;
@@ -23,9 +24,9 @@ import java.util.regex.Pattern;
 
 public class MyElasticConnector {
 
-    private final String PATH = "./elasticMap.json";
+    public void createIndex(String indexName) {
+        MyFileReader fileReader = new MyFileReader();
 
-    public void createIndex(String indexName, String type) {
         /**
          * Establishing connection to Elastic Cluster
          */
@@ -38,13 +39,23 @@ public class MyElasticConnector {
         /**
          * Creating index and determine mapping
          */
+        ClassLoader classLoader = getClass().getClassLoader();
+        String mappingFilePath = classLoader.getResource("elasticMap.json").getFile();
+
         request = new CreateIndexRequest(indexName);
-        request.mapping(type, PATH, XContentType.JSON);
+        String mappingFile = fileReader.readFromFile(mappingFilePath);
+        request.mapping("article", mappingFile, XContentType.JSON);
+
+        try {
+            client.indices().create(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Index created.");
     }
 
-    public void uploadingDocuments(String url, String indexName, String type) {
+    public void uploadingDocuments(String url, String indexName) {
         ParsingMain parser = new ParsingMain();
         URLHandlers urlHandlers = new URLHandlers();
 
@@ -56,7 +67,7 @@ public class MyElasticConnector {
                 RestClient.builder(
                         new HttpHost("localhost", 9200, "http")));
 
-        IndexRequest request = new IndexRequest(indexName, type);
+        IndexRequest request = new IndexRequest(indexName, "article");
 
         /**
          * Parsing the "incoming" URL to be able to get its elements
@@ -100,14 +111,14 @@ public class MyElasticConnector {
                 pe.printStackTrace();
             }
         } else {
-            System.out.println("Something went wrong with the regular expression");
+            System.out.println("Something went wrong with the regular expression or no date can be found.");
         }
         if (mAuthor.find()) {
             System.out.println(authorNodeData.substring(mAuthor.start(), mAuthor.end()));
             author = authorNodeData.substring(mAuthor.start(), mAuthor.end());
         } else {
             author = "Unknown author";
-            System.out.println("Something went wrong with the regular expression");
+            System.out.println("Something went wrong with the regular expression or the author is unknown.");
         }
 
         /**
