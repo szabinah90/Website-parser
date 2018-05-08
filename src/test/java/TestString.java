@@ -14,7 +14,7 @@ public class TestString {
     String testURL3 = "http://cimkezes.origo.hu/cimkek/microsoft/index.html?tag=Microsoft";
 
 
-    Pattern pattern = Pattern.compile("https://index.hu/24ora/\\?word=1&pepe=1&tol=1999-01-01&ig=(\\d{4}-\\d{2}-\\d{2})&s=(.*)");
+    Pattern pattern = Pattern.compile("https://index.hu/24ora/\\?word=1&pepe=1&tol=(\\d{4}-\\d{2}-\\d{2})&ig=(\\d{4}-\\d{2}-\\d{2})&s=(.*)");
 
     @Test
     public void testURL() {

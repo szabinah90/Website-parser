@@ -15,7 +15,7 @@ public class ParsingMain {
         MyFileWriter writer = new MyFileWriter();
         URLHandlers urlHandlers = new URLHandlers();
 
-        String urlToParse = "https://index.hu/24ora/?word=1&pepe=1&tol=1999-01-01&ig=2018-05-07&s=keyword";
+        String urlToParse = "https://index.hu/24ora/?word=1&pepe=1&tol=1999-01-01&ig=2018-05-08&s=Android";
         String DOMclassName = "datum cikk-date-label";
 
         /**
@@ -44,12 +44,10 @@ public class ParsingMain {
         /**
          * Creating ElasticSearch cluster connection and uploading the content of relevant URLs
          */
-
-
         MyElasticConnector myElasticConnector = new MyElasticConnector();
-        myElasticConnector.createIndex("ES_index");
+        myElasticConnector.createIndex("android");
         for (String url : urls) {
-            myElasticConnector.uploadingDocuments(url, "ES_index");
+            myElasticConnector.uploadingDocuments(url, "android");
         }
         System.exit(0);
     }

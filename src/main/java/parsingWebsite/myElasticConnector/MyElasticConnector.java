@@ -6,21 +6,15 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import parsingWebsite.ParsingMain;
 import parsingWebsite.fileReader.MyFileReader;
+import parsingWebsite.urlHandlers.Extractors;
 import parsingWebsite.urlHandlers.URLHandlers;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MyElasticConnector {
 
@@ -82,50 +76,19 @@ public class MyElasticConnector {
         /**
          * Extracting the name of the author and date published from a DataNode
          */
-        Elements scriptTags = new Elements();
-        try {
-            scriptTags = urlHandlers.parseURLs(url).getElementsByTag("script");
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
+        Extractors extractors = new Extractors(parsedURL.getElementsByTag("meta"));
+        String author = extractors.getAuthor();
+        Date datePublished = extractors.getDatePublished();
 
-        DataNode authorNode = new DataNode("");
-        for (Element element : scriptTags) {
-            for (DataNode node : element.dataNodes()) {
-                if (node.getWholeData().contains("author")) {
-                    authorNode = node;
-                }
-            }
-        }
-
-        String authorNodeData = authorNode.getWholeData();
-        Matcher mDate = Pattern.compile("\\d{4}-\\d{2}-\\d{2}").matcher(authorNodeData);
-        Matcher mAuthor = Pattern.compile("\"[A-ZÁÉÓŐÚŰÍ][a-záéóőúűí]+( [A-ZÁÉÓŐÚŰÍ][a-záéóőúűí]+)+\"").matcher(authorNodeData);
-        Date datePublished = null;
-        String author = null;
-        if (mDate.find()) {
-            System.out.println(authorNodeData.substring(mDate.start(), mDate.end()));
-            try {
-                datePublished = new SimpleDateFormat("yyyy-MM-dd").parse(authorNodeData.substring(mDate.start(), mDate.end()));
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-        } else {
-            System.out.println("Something went wrong with the regular expression or no date can be found.");
-        }
-        if (mAuthor.find()) {
-            System.out.println(authorNodeData.substring(mAuthor.start(), mAuthor.end()));
-            author = authorNodeData.substring(mAuthor.start(), mAuthor.end());
-        } else {
-            author = "Unknown author";
-            System.out.println("Something went wrong with the regular expression or the author is unknown.");
-        }
 
         /**
          * Creating map
          */
         HashMap<String, Object> outerMap = new HashMap<>();
         outerMap.put("date_published", datePublished);
+        if (author.equals("")) {
+            author = "Unknown author";
+        }
         outerMap.put("author", author);
         outerMap.put("title", parsedURL.title());
         outerMap.put("url", url);
