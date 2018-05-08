@@ -8,6 +8,6 @@ An ElasticSearch connector is also included, using high-level client.
 
 Kibana example figures:
 
-![screenshot from 2018-04-28 23-20-31](https://user-images.githubusercontent.com/36161760/39401373-ed4f2e08-4b43-11e8-8e64-4f40deae6cb6.png)
+![screenshot from 2018-05-08 21-15-30](https://user-images.githubusercontent.com/36161760/39778034-878ed0d6-5305-11e8-9074-e959440f5d04.png)
 
-![screenshot from 2018-04-28 23-24-44](https://user-images.githubusercontent.com/36161760/39401376-ff0dac6e-4b43-11e8-878c-fdb012d49a26.png)
+![screenshot from 2018-05-08 21-16-19](https://user-images.githubusercontent.com/36161760/39778043-8aa2606c-5305-11e8-9504-0f33917d75b6.png)
